@@ -27,7 +27,8 @@ jobs:
     - name: Determine Version
       id: gitversion
       uses: gittools/actions/gitversion/execute@main
-  publishupdater:
+  pack-updater:
+    name: Pack ClientUpdater
     runs-on: windows-latest
     needs: calculate-version
     env:
@@ -48,13 +49,14 @@ jobs:
       with:
         dotnet-version: '8.x.x'
     - name: Pack
-      run: dotnet pack ClientUpdater\ClientUpdater.csproj -p:AssemblyVersion=$env:GitVersion_AssemblySemVer -p:FileVersion=$env:GitVersion_AssemblySemFileVer -p:InformationalVersion=$env:GitVersion_InformationalVersion -p:PackageVersion=$env:GitVersion_NuGetVersionV2
+      run: dotnet pack ClientUpdater\ClientUpdater.csproj -p:AssemblyVersion=${{env.AssemblySemVer}} -p:FileVersion=${{env.AssemblySemFileVer}} -p:InformationalVersion=${{env.InformationalVersion}} -p:PackageVersion=${{env.NuGetVersionV2}}
     - name: Upload Artifacts
       uses: actions/upload-artifact@main
       with:
         path: ClientUpdater\bin\*\*.*nupkg
         if-no-files-found: error
-  publishsecondstagehupdater:
+  publish-secondstageupdater:
+    name: Publish SecondStageUpdater
     runs-on: windows-latest
     needs: calculate-version
     env:
@@ -78,7 +80,7 @@ jobs:
       with:
         dotnet-version: '8.x.x'
     - name: Publish
-      run: dotnet publish SecondStageUpdater/SecondStageUpdater.csproj -p:DebugType=embedded -f ${{ matrix.framework }} -p:AssemblyVersion=$env:GitVersion_AssemblySemVer -p:FileVersion=$env:GitVersion_AssemblySemFileVer -p:InformationalVersion=$env:GitVersion_InformationalVersion
+      run: dotnet publish SecondStageUpdater/SecondStageUpdater.csproj ${{ matrix.framework == 'net7.0' && '-c Release' || '' }} -p:DebugType=embedded -f ${{ matrix.framework }} -p:AssemblyVersion=${{env.AssemblySemVer}} -p:FileVersion=${{env.AssemblySemFileVer}} -p:InformationalVersion=${{env.InformationalVersion}}
     - name: Zip
       run: 7z a -r ${{ format('SecondStageUpdater-v{0}-{1}.zip', env.GitVersion_SemVer, matrix.framework) }} ./SecondStageUpdater/bin/Release/${{ matrix.framework }}/publish/*.*
     - name: Upload Artifacts
@@ -87,7 +89,8 @@ jobs:
         path: ./*.zip
         if-no-files-found: error
   release:
-    needs: [calculate-version, publishupdater, publishsecondstagehupdater]
+    name: Release
+    needs: [calculate-version, pack-updater, publish-secondstageupdater]
     env:
       PreReleaseTag: ${{ needs.calculate-version.outputs.PreReleaseTag }}
       SemVer: ${{ needs.calculate-version.outputs.SemVer }}
