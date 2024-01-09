@@ -37,7 +37,11 @@ using Rampastring.Tools;
 
 public static class Updater
 {
+#if NETFRAMEWORK
+    private const string SECOND_STAGE_UPDATER = "SecondStageUpdater.exe";
+#else
     private const string SECOND_STAGE_UPDATER = "SecondStageUpdater.dll";
+#endif
 
     public const string VERSION_FILE = "version";
     public const string ARCHIVE_FILE_EXTENSION = ".lzma";
