@@ -6,7 +6,7 @@
     <Description>CnCNet Client Second-Stage Updater</Description>
     <Company>CnCNet</Company>
     <Product>CnCNet.RS.SecondStageUpdater</Product>
-    <Copyright>Copyright © CnCNet 2023</Copyright>
+    <Copyright>Copyright © CnCNet 2022-2024</Copyright>
     <Trademark></Trademark>
     <AssemblyName>SecondStageUpdater</AssemblyName>
     <RootNamespace>SecondStageUpdater</RootNamespace>
@@ -24,12 +24,12 @@
     <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Rampastring.RS.Tools" Version="2.0.5" />
+    <PackageReference Include="Rampastring.RS.Tools" Version="2.0.6" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Meziantou.Polyfill" Version="1.0.31" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <PackageReference Include="Meziantou.Polyfill" Version="1.0.33" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
