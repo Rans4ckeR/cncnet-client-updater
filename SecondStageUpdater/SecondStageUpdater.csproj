@@ -29,7 +29,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Meziantou.Polyfill" Version="1.0.33" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
+    <PackageReference Include="Meziantou.Polyfill" Version="1.0.34" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
